@@ -1,7 +1,7 @@
 # ИТ2201
 ## Голосун Иван
 ### Репозиторий для лабораторных работ
-![image](https://yandex.ru/images/search?from=tabbar&img_url=https%3A%2F%2Fpbs.twimg.com%2Fmedia%2FEf1cZu1UYAACRN-.jpg&lr=35&pos=0&rpt=simage&text=pubg%20mobile)
+![image](https://avatars.mds.yandex.net/i?id=d6b189021473b98620da711732d350a40cf1d611-9264516-images-thumbs&n=13)
 1. PUBG
 2. battelgrounds
 3. mobile
