@@ -1,1 +1,0 @@
- C:\\Users\\Sharager\\StudioProjects\\lab5\\.dart_tool\\flutter_build\\04f584abcbf9ef3bc147237fa44752fa\\native_assets.json: 
