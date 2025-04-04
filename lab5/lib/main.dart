@@ -15,7 +15,13 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Списки в Flutter',
       theme: ThemeData(primarySwatch: Colors.blue),
-      home: const MainScreen(),
+      routes: {
+        '/': (context) => const MainScreen(),
+        '/simple': (context) => const SimpleList(),
+        '/infinity': (context) => const InfinityList(),
+        '/math': (context) => const InfinityMathList(),
+      },
+      initialRoute: '/',
     );
   }
 }
@@ -32,30 +38,15 @@ class MainScreen extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             ElevatedButton(
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => const SimpleList()),
-                );
-              },
+              onPressed: () => Navigator.pushNamed(context, '/simple'),
               child: const Text('Простой список'),
             ),
             ElevatedButton(
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => const InfinityList()),
-                );
-              },
+              onPressed: () => Navigator.pushNamed(context, '/infinity'),
               child: const Text('Бесконечный список'),
             ),
             ElevatedButton(
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => const InfinityMathList()),
-                );
-              },
+              onPressed: () => Navigator.pushNamed(context, '/math'),
               child: const Text('Степени двойки'),
             ),
           ],
