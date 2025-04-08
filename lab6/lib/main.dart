@@ -1,32 +1,48 @@
 import 'package:flutter/material.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(const AreaCalculatorApp());
 }
 
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+class AreaCalculatorApp extends StatelessWidget {
+  const AreaCalculatorApp({super.key});
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Калькулятор площади',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
-      home: const AreaCalculator(),
+      theme: ThemeData(primarySwatch: Colors.blue),
+      home: const AreaCalculatorScreen(),
     );
   }
 }
 
-class AreaCalculator extends StatefulWidget {
-  const AreaCalculator({super.key});
+// Вынесенная функция валидации
+String? _validateDimension(String? value) {
+  if (value == null || value.isEmpty) {
+    return 'Пожалуйста, введите значение';
+  }
 
-  @override
-  State<AreaCalculator> createState() => _AreaCalculatorState();
+  final number = double.tryParse(value);
+  if (number == null) {
+    return 'Введите корректное число';
+  }
+
+  if (number <= 0) {
+    return 'Число должно быть больше 0';
+  }
+
+  return null;
 }
 
-class _AreaCalculatorState extends State<AreaCalculator> {
+class AreaCalculatorScreen extends StatefulWidget {
+  const AreaCalculatorScreen({super.key});
+
+  @override
+  State<AreaCalculatorScreen> createState() => _AreaCalculatorScreenState();
+}
+
+class _AreaCalculatorScreenState extends State<AreaCalculatorScreen> {
   final _formKey = GlobalKey<FormState>();
   final _widthController = TextEditingController();
   final _heightController = TextEditingController();
@@ -46,12 +62,12 @@ class _AreaCalculatorState extends State<AreaCalculator> {
       final area = width * height;
 
       setState(() {
-        _result = 'S = $width * $height = ${area.toStringAsFixed(0)} (мм²)';
+        _result = 'S = $width * $height = ${area.toStringAsFixed(2)} (мм²)';
       });
 
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
-          content: Text('Форма успешно заполнена'),
+          content: Text('Успешно вычислено!'),
           backgroundColor: Colors.green,
         ),
       );
@@ -61,65 +77,34 @@ class _AreaCalculatorState extends State<AreaCalculator> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Калькулятор площади'),
-      ),
+      appBar: AppBar(title: const Text('Калькулятор площади')),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Form(
           key: _formKey,
           child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const Text(
-                'Ширина (мм):',
-                style: TextStyle(fontSize: 20.0),
-              ),
               TextFormField(
                 controller: _widthController,
+                decoration: const InputDecoration(labelText: 'Ширина (мм)'),
                 keyboardType: TextInputType.number,
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Пожалуйста, введите ширину';
-                  }
-                  if (double.tryParse(value) == null) {
-                    return 'Введите корректное число';
-                  }
-                  return null;
-                },
-              ),
-              const SizedBox(height: 20.0),
-              const Text(
-                'Высота (мм):',
-                style: TextStyle(fontSize: 20.0),
+                validator: _validateDimension, // Используем вынесенную функцию
               ),
               TextFormField(
                 controller: _heightController,
+                decoration: const InputDecoration(labelText: 'Высота (мм)'),
                 keyboardType: TextInputType.number,
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Пожалуйста, введите высоту';
-                  }
-                  if (double.tryParse(value) == null) {
-                    return 'Введите корректное число';
-                  }
-                  return null;
-                },
+                validator: _validateDimension, // Используем вынесенную функцию
               ),
-              const SizedBox(height: 20.0),
-              Center(
-                child: ElevatedButton(
-                  onPressed: _calculateArea,
-                  child: const Text('Вычислить'),
-                ),
+              const SizedBox(height: 20),
+              ElevatedButton(
+                onPressed: _calculateArea,
+                child: const Text('Вычислить'),
               ),
-              const SizedBox(height: 20.0),
               if (_result.isNotEmpty)
-                Center(
-                  child: Text(
-                    _result,
-                    style: const TextStyle(fontSize: 20.0),
-                  ),
+                Padding(
+                  padding: const EdgeInsets.only(top: 20),
+                  child: Text(_result, style: const TextStyle(fontSize: 18)),
                 ),
             ],
           ),
